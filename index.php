@@ -4,6 +4,7 @@ $scope = 'snsapi_login';
 $state = '';
 $code = '';
 $redirect_uri = '';
+$device = '';
 
 if (isset($_GET['device'])) {
     $device = $_GET['device'];
