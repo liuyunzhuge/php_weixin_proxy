@@ -22,6 +22,9 @@ if (isset($_GET['redirect_uri'])) {
 if (isset($_GET['code'])) {
     $code = $_GET['code'];
 }
+if (isset($_GET['scope'])) {
+    $scope = $_GET['scope'];
+}
 
 if ($code == 'test') {
     exit;
