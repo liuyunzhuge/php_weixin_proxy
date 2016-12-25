@@ -5,6 +5,13 @@ $state = '';
 $code = '';
 $redirect_uri = '';
 $device = '';
+$protocol = '';
+
+if ($_SERVER['HTTPS'] != "on") {
+    $protocol = 'http';
+}else{
+    $protocol = 'https';
+}
 
 if (isset($_GET['device'])) {
     $device = $_GET['device'];
@@ -41,7 +48,7 @@ if (empty($code)) {
     $options = [
         $authUrl,
         '?appid=' . $appid,
-        '&redirect_uri=' . urlencode($_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/'),
+        '&redirect_uri=' . urlencode($protocol . '://' . $_SERVER['HTTP_HOST'] . '/'),
         '&response_type=code',
         '&scope=' . $scope,
         '&state=' . $state,
