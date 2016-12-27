@@ -7,7 +7,7 @@ $redirect_uri = '';
 $device = '';
 $protocol = '';
 
-if ($_SERVER['HTTPS'] != "on") {
+if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "on") {
     $protocol = 'http';
 }else{
     $protocol = 'https';
