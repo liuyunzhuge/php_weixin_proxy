@@ -1,4 +1,17 @@
 <?php
+function is_HTTPS(){
+    if(!isset($_SERVER['HTTPS']))  return FALSE;
+    if($_SERVER['HTTPS'] === 1){  //Apache
+        return TRUE;
+    }elseif($_SERVER['HTTPS'] === 'on'){ //IIS
+        return TRUE;
+    }elseif($_SERVER['SERVER_PORT'] == 443){ //其他
+        return TRUE;
+    }
+    return FALSE;
+}
+
+
 $appid = '';
 $scope = 'snsapi_login';
 $state = '';
@@ -7,10 +20,10 @@ $redirect_uri = '';
 $device = '';
 $protocol = '';
 
-if (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] != "on") {
-    $protocol = 'http';
-}else{
+if (is_HTTPS()) {
     $protocol = 'https';
+} else {
+    $protocol = 'http';
 }
 
 if (isset($_GET['device'])) {
@@ -69,9 +82,11 @@ if (empty($code)) {
     header('Location: ' . implode('', $options));
 } else {
     if (isset($_COOKIE['redirect_uri'])) {
+        $back_url = urldecode($_COOKIE['redirect_uri']);
         header('Location: ' . implode('', [
-                urldecode($_COOKIE['redirect_uri']),
-                '?code=' . $code,
+                $back_url,
+                strpos($back_url, '?') ? '&' : '?',
+                'code=' . $code,
                 '&state=' . $state
             ]));
     }
