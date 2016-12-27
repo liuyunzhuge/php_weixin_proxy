@@ -1,14 +1,26 @@
 <?php
-function is_HTTPS(){
-    if(!isset($_SERVER['HTTPS']))  return FALSE;
-    if($_SERVER['HTTPS'] === 1){  //Apache
+function is_HTTPS()
+{
+    if (!isset($_SERVER['HTTPS'])) return FALSE;
+    if ($_SERVER['HTTPS'] === 1) {  //Apache
         return TRUE;
-    }elseif($_SERVER['HTTPS'] === 'on'){ //IIS
+    } elseif ($_SERVER['HTTPS'] === 'on') { //IIS
         return TRUE;
-    }elseif($_SERVER['SERVER_PORT'] == 443){ //其他
+    } elseif ($_SERVER['SERVER_PORT'] == 443) { //其他
         return TRUE;
     }
     return FALSE;
+}
+
+function getDomain()
+{
+    $server_name = $_SERVER['SERVER_NAME'];
+
+    if (strpos($server_name, 'www.') !== false) {
+        return substr($server_name, 4);
+    }
+
+    return $server_name;
 }
 
 
@@ -73,7 +85,7 @@ if (empty($code)) {
         "Set-Cookie: redirect_uri=",
         urlencode($redirect_uri),
         "; path=/; domain=",
-        $_SERVER['HTTP_HOST'],
+        getDomain(),
         "; expires=" . gmstrftime("%A, %d-%b-%Y %H:%M:%S GMT", time() + 60),
         "; Max-Age=" + 60,
         "; httponly"
